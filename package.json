@@ -1,0 +1,23 @@
+{
+  "name": "api_restful_jwt_tienda",
+  "version": "1.0.0",
+  "description": "API RESTful con autenticación JWT y CRUD",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fapb92/apiRestful-Tienda.git"
+  },
+  "author": "Fabian Paredes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fapb92/apiRestful-Tienda/issues"
+  },
+  "homepage": "https://github.com/fapb92/apiRestful-Tienda#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "express-validator": "^6.14.2"
+  }
+}
