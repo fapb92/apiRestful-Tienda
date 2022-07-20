@@ -1,8 +1,12 @@
-import 'dotenv/config'
 import express from "express";
+import productRouters from './routes/productos.js'
 
-const app = express();
 
-const port = process.env.PORT || 5000
+export const app = express();
 
-app.listen(port, () => console.log(`Listening on port ${port}`))
+app.use(express.json())
+
+
+//Productos
+
+app.use("/products", productRouters)
