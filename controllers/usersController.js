@@ -13,12 +13,13 @@ export class userController extends usersModel {
 
             const [result] = await this.nuevoUsuario(req.body)
 
-            const [token, expiresIn] = generarToken({ id: result.insertId })
+            console.log(result.insertId);
+
+            const { token, expiresIn } = generarToken({ id: result.insertId })
 
             return res.status(201).json({ message: "Usuario creado", token, expiresIn })
 
         } catch (error) {
-            console.log(error);
             return res.status(error.code).json({ message: error.message })
         }
     }
@@ -41,5 +42,9 @@ export class userController extends usersModel {
         } catch (error) {
             return res.status(error.code).json({ message: error.message })
         }
+    }
+
+    informacionUsuario = async (req, res) => {
+        const [rows] = await this.obtenerUsuarioPorId(req.body.id)
     }
 }

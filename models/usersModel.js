@@ -11,9 +11,9 @@ export class usersModel {
     //     return await this.conexion.query('SELECT * FROM users');
     // };
 
-    // obtenerUsuarioPorId = async (userId) => {
-    //     return await this.conexion.query('SELECT * FROM users WHERE id = ?', [userId]);
-    // };
+    obtenerUsuarioPorId = async (userId) => {
+        return await this.conexion.query('SELECT id, nombres, email, rol FROM users WHERE id = ?', [userId]);
+    };
 
     obtenerUsuarioPorEmail = async (userEmail) => {
         return await this.conexion.query('SELECT * FROM users WHERE email = ?', [userEmail]);
