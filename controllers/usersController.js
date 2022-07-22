@@ -14,7 +14,7 @@ export class userController extends usersModel {
 
             const [result] = await this.nuevoUsuario(req.body)
 
-            const { token, expiresIn } = generarToken({ id: result.insertId })
+            const { token, expiresIn } = generarToken({ id: result.insertId, rol: "vendedor" })
             generateRefreshToken({ id: result.insertId }, res)
 
             return res.status(201).json({ message: "Usuario creado", token, expiresIn })
@@ -36,7 +36,7 @@ export class userController extends usersModel {
             if (!comparedPassword) throw { code: 403, message: "Contraseña incorrecta" }
             this.password = ''
 
-            const { token, expiresIn } = generarToken({ id: user[0].id })
+            const { token, expiresIn } = generarToken({ id: user[0].id, rol: user[0].rol })
             generateRefreshToken({ id: user[0].id }, res)
 
             return res.status(200).json({ message: "login ok", token, expiresIn })

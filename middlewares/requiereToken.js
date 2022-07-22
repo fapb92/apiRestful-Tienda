@@ -8,7 +8,7 @@ export const requiereToken = (req, res, next) => {
 
         const { data } = jwt.verify(token, process.env.JWT_SECRET_TOKEN)
 
-        console.log(data)
+        console.log(data);
 
         req.uid = data.id
         req.rol = data.rol

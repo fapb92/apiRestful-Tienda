@@ -3,16 +3,20 @@ export class ProductosModel {
         this.conexion = conexion;
     }
 
-    obtenerTodosLosProductos = async () => {
-        return await this.conexion.query('SELECT * FROM products');
+    obtenerTodosLosProductos = async (from = 0, rows = 10) => {
+        return await this.conexion.query('SELECT products.id, products.nombre, products.precio, users.nombres as usuario FROM products INNER JOIN users ON products.idUser=users.id LIMIT ?, ?', [from, rows]);
     };
 
     obtenerProductosPorUserId = async (userId) => {
         return await this.conexion.query('SELECT * FROM products WHERE idUser = ?', [userId]);
     };
 
-    obtenerProductoPorId = async (productId) => {
-        return await this.conexion.query('SELECT * FROM products WHERE id = ?', [productId]);
+    obtenerProductoPorId = async (productId, userId = 0) => {
+        if (userId === 0) {
+            return await this.conexion.query('SELECT * FROM products WHERE id = ?', [productId]);
+
+        }
+        return await this.conexion.query('SELECT * FROM products WHERE id = ?, idUser = ?', [productId, userId]);
     };
 
     nuevoProducto = async ({ nombre, cantidad, precio, idUser }) => {
