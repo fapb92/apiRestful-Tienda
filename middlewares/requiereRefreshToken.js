@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken"
 export const requiereRefreshToken = (req, res, next) => {
     try {
         let refToken = req.cookies?.refresh_token
-        if (!refToken) throw { code: 401, message: "No existe token" }
+        if (!refToken) throw { codeEr: 401, message: "No existe token" }
 
         refToken = refToken.split(" ")[1]
 
@@ -14,7 +14,9 @@ export const requiereRefreshToken = (req, res, next) => {
         next()
 
     } catch (error) {
-        console.log(error);
-        return res.status(error.code).json({ message: error.message })
+        if (error?.codeEr) {
+            return res.status(error.codeEr).json({ message: error.message })
+        }
+        return res.status(400).json({ message: error.message })
     }
 }
