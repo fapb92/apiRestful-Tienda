@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import 'dotenv/config'
 
 export const generarToken = (data) => {
     const expiresIn = 60 * 20

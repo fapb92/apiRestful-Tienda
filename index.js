@@ -1,9 +1,12 @@
+import cookieParser from "cookie-parser";
 import express from "express";
 import productRouters from './routes/productos.js'
 import userRouters from './routes/users.js'
 
 
 export const app = express();
+
+app.use(cookieParser())
 
 app.use(express.json())
 

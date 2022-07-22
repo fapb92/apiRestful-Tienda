@@ -1,4 +1,5 @@
 import { usersModel } from "../models/usersModel.js";
+import { generateRefreshToken } from "../utils/generarRefreshToken.js";
 import { generarToken } from '../utils/generarToken.js'
 
 export class userController extends usersModel {
@@ -16,6 +17,7 @@ export class userController extends usersModel {
             console.log(result.insertId);
 
             const { token, expiresIn } = generarToken({ id: result.insertId })
+            generateRefreshToken({ id: result.insertId }, res)
 
             return res.status(201).json({ message: "Usuario creado", token, expiresIn })
 
@@ -34,8 +36,10 @@ export class userController extends usersModel {
             this.password = user[0].password
             const comparedPassword = await this.compararPassword(password)
             if (!comparedPassword) throw { code: 403, message: "Contraseña incorrecta" }
+            this.password = ''
 
             const { token, expiresIn } = generarToken({ id: user[0].id })
+            generateRefreshToken({ id: user[0].id }, res)
 
             return res.status(200).json({ message: "login ok", token, expiresIn })
 
@@ -45,6 +49,18 @@ export class userController extends usersModel {
     }
 
     informacionUsuario = async (req, res) => {
-        const [rows] = await this.obtenerUsuarioPorId(req.body.id)
+        const [rows] = await this.obtenerUsuarioPorId(req.uid)
+        return res.status(200).json(rows[0])
+    }
+
+    nuevoToken = (req, res) => {
+        console.log("6");
+        const { token, expiresIn } = generarToken({ id: req.uid })
+        return res.status(200).json({ token, expiresIn })
+    }
+
+    cerrarSesion = (_, res) => {
+        res.clearCookie("refresh_token")
+        res.json({ message: "ok" })
     }
 }
