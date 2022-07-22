@@ -14,8 +14,6 @@ export class userController extends usersModel {
 
             const [result] = await this.nuevoUsuario(req.body)
 
-            console.log(result.insertId);
-
             const { token, expiresIn } = generarToken({ id: result.insertId })
             generateRefreshToken({ id: result.insertId }, res)
 
@@ -54,7 +52,6 @@ export class userController extends usersModel {
     }
 
     nuevoToken = (req, res) => {
-        console.log("6");
         const { token, expiresIn } = generarToken({ id: req.uid })
         return res.status(200).json({ token, expiresIn })
     }

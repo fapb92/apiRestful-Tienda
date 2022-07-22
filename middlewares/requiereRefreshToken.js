@@ -9,7 +9,6 @@ export const requiereRefreshToken = (req, res, next) => {
 
         const { data } = jwt.verify(refToken, process.env.JWT_SECRET_REFRESHTOKEN)
 
-        console.log(data);
         req.uid = data.id
 
         next()
