@@ -16,7 +16,7 @@ export class ProductosModel {
             return await this.conexion.query('SELECT * FROM products WHERE id = ?', [productId]);
 
         }
-        return await this.conexion.query('SELECT * FROM products WHERE id = ?, idUser = ?', [productId, userId]);
+        return await this.conexion.query('SELECT * FROM products WHERE id = ? AND idUser = ?', [productId, userId]);
     };
 
     nuevoProducto = async ({ nombre, cantidad, precio, idUser }) => {

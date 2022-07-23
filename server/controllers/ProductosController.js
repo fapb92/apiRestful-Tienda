@@ -13,8 +13,7 @@ export class ProductosController extends ProductosModel {
     };
 
     listaProductosPorUserId = async (req, res) => {
-        const uid = req.params.uid || req.uid;
-        const [rows] = await this.obtenerProductosPorUserId(uid);
+        const [rows] = await this.obtenerProductosPorUserId(req.uid);
         res.status(200).json(rows);
     };
 

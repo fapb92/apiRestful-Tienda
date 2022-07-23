@@ -17,8 +17,8 @@ router.get("/:from-:range", validarFromRange, requiereToken, requiereRol, prodCo
 router.post("/lista&:uid", validarUserId, requiereToken, requiereRol, prodCont.listaProductosPorUserId)
 
 //acceso por usuario
-router.get("/:prid", validarProductId, requiereToken, prodCont.productoPorId)
-router.post("/lista", requiereToken, prodCont.listaProductosPorUserId)
+router.get("/lista", requiereToken, prodCont.listaProductosPorUserId)
+router.get("/lista/:prid", validarProductId, requiereToken, prodCont.productoPorId)
 router.put("/crear", requiereToken, prodCont.crearProducto)
 
 
