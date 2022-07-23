@@ -1,19 +1,32 @@
-import { Link } from "react-router-dom"
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { useProduct } from "../../../context/productContext"
 
 export const CrearProducto = () => {
+    const [nombre, setNombre] = useState("")
+    const [cantidad, setCantidad] = useState("")
+    const [precio, setPrecio] = useState("")
+    const { crearProducto } = useProduct()
+    let navigate = useNavigate()
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        crearProducto(nombre, cantidad, precio)
+        navigate(-1)
+    }
     return (
-        <form>
+        <form onSubmit={e => handleSubmit(e)}>
             <div>
-                <label for="nombre">Nombre</label>
-                <input type="text" name="nombre" />
+                <label >Nombre</label>
+                <input type="text" name="nombre" onChange={e => setNombre(e.target.value)} value={nombre} />
             </div>
             <div>
-                <label for="cantidad">Cantidad</label>
-                <input type="text" name="cantidad" />
+                <label >Cantidad</label>
+                <input type="text" name="cantidad" onChange={e => setCantidad(e.target.value)} value={cantidad} />
             </div>
             <div>
-                <label for="precio">Precio</label>
-                <input type="text" name="precio" />
+                <label >Precio</label>
+                <input type="text" name="precio" onChange={e => setPrecio(e.target.value)} value={precio} />
             </div>
             <div>
                 <button>Crear</button>

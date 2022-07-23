@@ -1,10 +1,13 @@
 
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { Button } from '../Buttons/Button'
+import { useAuth } from '../../../context/authContext'
+import { LoginLogOutBut } from '../Buttons/LoginLogOut'
 // import "./navbar.css"
 
 export const NavBar = () => {
+    const { Auth } = useAuth()
+
     return (
         <nav>
             <div>
@@ -20,7 +23,7 @@ export const NavBar = () => {
                 </li>
                 <li>
                     <div>
-                        <Button>Iniciar sesión</Button>
+                        <LoginLogOutBut>{Auth.auth ? "Cerrar sesión" : "Iniciar sesión"}</LoginLogOutBut>
                     </div>
                 </li>
             </ul>

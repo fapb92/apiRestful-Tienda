@@ -1,26 +1,33 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../../context/authContext"
 
 export const Login = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const { login } = useAuth()
+    const { login, Auth } = useAuth()
+    const navigate = useNavigate()
 
     const handleOnSubmit = async (e) => {
         e.preventDefault()
         await login(email, password);
     }
+
+    useEffect(() => {
+        if (Auth.auth) {
+            navigate("/", { replace: true });
+        }
+    }, [Auth])
     return (
         <div>
             <form onSubmit={async e => await handleOnSubmit(e)}>
                 <div>
-                    <label for="email">Correo</label>
+                    <label>Correo</label>
                     <input type="email" name="email" onChange={e => setEmail(e.target.value)} value={email} />
                 </div>
 
                 <div>
-                    <label for="password">Contraseña</label>
+                    <label>Contraseña</label>
                     <input type="password" name="password" onChange={e => setPassword(e.target.value)} value={password} />
                 </div>
                 <div>
