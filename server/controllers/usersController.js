@@ -10,17 +10,20 @@ export class userController extends usersModel {
     registrarUsuario = async (req, res) => {
         try {
             const [user] = await this.obtenerUsuarioPorEmail(req.body.email)
-            if (!!user.length) throw { code: 403, message: "Usuario ya existe" }
+            if (!!user.length) throw { codeEr: 403, message: "Usuario ya existe" }
 
             const [result] = await this.nuevoUsuario(req.body)
 
             const { token, expiresIn } = generarToken({ id: result.insertId, rol: "vendedor" })
-            generateRefreshToken({ id: result.insertId }, res)
+            const refreshToken = generateRefreshToken({ id: result.insertId, rol: "vendedor" })
 
-            return res.status(201).json({ message: "Usuario creado", token, expiresIn })
+            return res.status(201).json({ message: "Usuario creado", token, expiresIn, refreshToken })
 
         } catch (error) {
-            return res.status(error.code).json({ message: error.message })
+            if (error?.codeEr) {
+                return res.status(error.codeEr).json({ message: error.message })
+            }
+            return res.status(400).json({ message: error.message })
         }
     }
 
@@ -29,20 +32,23 @@ export class userController extends usersModel {
         try {
             const [user] = await this.obtenerUsuarioPorEmail(email)
 
-            if (!user.length) throw { code: 403, message: "Usuario no encontrado" }
+            if (!user.length) throw { codeEr: 403, message: "Usuario no encontrado" }
 
             this.password = user[0].password
             const comparedPassword = await this.compararPassword(password)
-            if (!comparedPassword) throw { code: 403, message: "Contraseña incorrecta" }
+            if (!comparedPassword) throw { codeEr: 403, message: "Contraseña incorrecta" }
             this.password = ''
 
             const { token, expiresIn } = generarToken({ id: user[0].id, rol: user[0].rol })
-            generateRefreshToken({ id: user[0].id }, res)
+            const refreshToken = generateRefreshToken({ id: user[0].id, rol: user[0].rol })
 
-            return res.status(200).json({ message: "login ok", token, expiresIn })
+            return res.status(200).json({ message: "login ok", token, expiresIn, refreshToken })
 
         } catch (error) {
-            return res.status(error.code).json({ message: error.message })
+            if (error?.codeEr) {
+                return res.status(error.codeEr).json({ message: error.message })
+            }
+            return res.status(400).json({ message: error.message })
         }
     }
 
@@ -52,12 +58,11 @@ export class userController extends usersModel {
     }
 
     nuevoToken = (req, res) => {
-        const { token, expiresIn } = generarToken({ id: req.uid })
+        const { token, expiresIn } = generarToken({ id: req.uid, rol: req.rol })
         return res.status(200).json({ token, expiresIn })
     }
 
     cerrarSesion = (_, res) => {
-        res.clearCookie("refresh_token")
         res.json({ message: "ok" })
     }
 }

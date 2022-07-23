@@ -16,7 +16,7 @@ router.post("/login", validarLogin, usersCont.loginUsuario)
 
 router.get("/user", requiereToken, usersCont.informacionUsuario)
 
-router.post("/refresh", requiereRefreshToken, usersCont.nuevoToken)
+router.get("/refresh", requiereRefreshToken, usersCont.nuevoToken)
 
 router.post("/logout", usersCont.cerrarSesion)
 
